@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Timestamper",
+  "name": "DateStamp",
   "version": "1.0",
   "description": "Inserts the current date and time at the cursor.",
   "permissions": ["contextMenus", "clipboardWrite"],
