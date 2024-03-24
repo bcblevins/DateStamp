@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Date Stamp",
-    "version": "1.0",
+    "version": "0.6",
     "description": "Inserts the current date and time at the cursor.",
     "permissions": ["contextMenus", "activeTab", "scripting"],
     "background": {
