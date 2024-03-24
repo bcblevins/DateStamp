@@ -1,14 +1,14 @@
 {
-  "manifest_version": 3,
-  "name": "DateStamp",
-  "version": "1.0",
-  "description": "Inserts the current date and time at the cursor.",
-  "permissions": ["contextMenus", "clipboardWrite"],
-  "background": {
-    "service_worker": "background.js"
+    "manifest_version": 3,
+    "name": "Date Stamp",
+    "version": "1.0",
+    "description": "Inserts the current date and time at the cursor.",
+    "permissions": ["contextMenus", "activeTab", "scripting"],
+    "background": {
+        "service_worker": "background.js"
   },
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": "icon.png"
-  }
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "icon.png"
+    }
 }
