@@ -33,6 +33,15 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
     }
 });
 
+//Adds Keyboard shortcut capability
+chrome.commands.onCommand.addListener(function (info, tab) {
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            function: insertTimeStamp
+        });
+    
+});
+
 //function that is called above
 function insertTimeStamp() {
 
