@@ -44,21 +44,11 @@ chrome.commands.onCommand.addListener(function (info, tab) {
 
 //function that is called above
 function insertTimeStamp() {
+    let now = new Date();
+    let stamp = now.toLocaleString();
 
-    //[3],[4]
-    //document.activeElement: returns the element in the DOM that currently has focus by the user. 
-    //DOM: data representation of the structure of a webpage that acts as an interface for programs to interact with the webpage
-    var activeElement = document.activeElement;
-
-    //[5]
-    //determines if the activeElement is something that we can inject text into.
-    if (activeElement.tagName.toLowerCase() === "input" || activeElement.tagName.toLowerCase() === "textarea") {
-
-        //adds date to the end of the selected editable element
-        //TODO: make the text insert at the cursor instead of at the end of the editable element
-        let now = new Date()
-        activeElement.value += now.toLocaleString();
-    }
+    //
+    document.execCommand('insertText', false, stamp);
 }
 
 
@@ -71,11 +61,3 @@ function insertTimeStamp() {
 //[2] Scripting:
 //https://developer.chrome.com/docs/extensions/reference/api/scripting
 
-//[3] DOM:
-//https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction
-
-//[4] document.activeElement:
-//https://developer.mozilla.org/en-US/docs/Web/API/Document/activeElement
-
-//[5] activeElement.tagName:
-//https://developer.mozilla.org/en-US/docs/Web/API/Element/tagName
