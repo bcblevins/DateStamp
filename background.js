@@ -13,6 +13,19 @@ chrome.contextMenus.create({
     id: 'dateStamp'
 });
 
+chrome.contextMenus.create({
+
+    //'title' will show up in the context menu
+    title: 'Insert Pending Stamp',
+
+    //'contexts' is used to tell when our context menu item should be displayed, 
+    //editable will restrict it to text boxes and the like
+    contexts: ['editable'],
+    
+    //'id' is used to refer to our menu item in our code.
+    id: 'pendingStamp'
+});
+
 //[1]
 //onClicked: this is an event that triggers when you click something, in this case: the context menu
 //addListener: this is something that will watch out for the 'onClicked' event and call the function
@@ -29,6 +42,14 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
             //selects where the script should be injected to and what functino to call
             target: { tabId: tab.id },
             function: insertTimeStamp
+        });
+    }
+    if (info.menuItemId === "pendingStamp") {
+        
+        chrome.scripting.executeScript({
+
+            target: { tabId: tab.id },
+            function: insertPendingStamp
         });
     }
 });
@@ -51,7 +72,15 @@ function insertTimeStamp() {
     document.execCommand('insertText', false, stamp);
 }
 
-
+function insertPendingStamp() {
+    var activeElement = document.activeElement;
+    if (activeElement.tagName.toLowerCase() === "input" || activeElement.tagName.toLowerCase() === "textarea") {
+        let now = new Date();
+        let shortDate = (now.getMonth() + 1) + "/" + now.getDay();
+        let pendingStamp = "PENDING " + shortDate;
+        activeElement.value = pendingStamp + "\n\n" + activeElement.value;
+    }
+}
 
 //SOURCES FOR NOTES:
 
