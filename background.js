@@ -1,16 +1,18 @@
 //[1]
 //chrome.contextMenus: API provided by chrome to allow adding to context (right click) menu in chrome
-chrome.contextMenus.create({
-
-    //'title' will show up in the context menu
-    title: 'Insert Date Stamp',
-
-    //'contexts' is used to tell when our context menu item should be displayed, 
-    //editable will restrict it to text boxes and the like
-    contexts: ['editable'],
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.contextMenus.create({
     
-    //'id' is used to refer to our menu item in our code.
-    id: 'dateStamp'
+        //'title' will show up in the context menu
+        title: 'Insert Date Stamp',
+    
+        //'contexts' is used to tell when our context menu item should be displayed, 
+        //editable will restrict it to text boxes and the like
+        contexts: ['editable'],
+        
+        //'id' is used to refer to our menu item in our code.
+        id: 'dateStamp'
+    });
 });
 
 chrome.contextMenus.create({
