@@ -8,7 +8,7 @@ chrome.contextMenus.create({
     //'contexts' is used to tell when our context menu item should be displayed, 
     //editable will restrict it to text boxes and the like
     contexts: ['editable'],
-    
+
     //'id' is used to refer to our menu item in our code.
     id: 'dateStamp'
 });
@@ -21,7 +21,7 @@ chrome.contextMenus.create({
     //'contexts' is used to tell when our context menu item should be displayed, 
     //editable will restrict it to text boxes and the like
     contexts: ['editable'],
-    
+
     //'id' is used to refer to our menu item in our code.
     id: 'pendingStamp'
 });
@@ -33,7 +33,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 
     //check if the item that was clicked was the menu item we created
     if (info.menuItemId === "dateStamp") {
-        
+
         //[2]
         //chrome.scripting: an API that allows scripts to be injected into websites.
         //executeScript: does the above, specificaly from a function rather than a file.
@@ -45,7 +45,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
         });
     }
     if (info.menuItemId === "pendingStamp") {
-        
+
         chrome.scripting.executeScript({
 
             target: { tabId: tab.id },
@@ -55,12 +55,19 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 });
 
 //Adds Keyboard shortcut capability
-chrome.commands.onCommand.addListener(function (info, tab) {
+chrome.commands.onCommand.addListener(function (command, tab) {
+    if (command === "run-insertTimeStamp") {
         chrome.scripting.executeScript({
             target: { tabId: tab.id },
             function: insertTimeStamp
         });
-    
+    }
+    if (command === "run-insertPendingStamp") {
+        chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            function: insertPendingStamp
+        });
+    }
 });
 
 //function that is called above
