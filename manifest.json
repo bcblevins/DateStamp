@@ -1,42 +1,40 @@
 {
-    "manifest_version": 3,
-    "name": "Date Stamp",
-    "version": "0.7",
-    "icons": {
-        "16": "icon16.png",
-        "19": "icon19.png",
-        "32": "icon32.png",
-        "38": "icon38.png",
-        "48": "icon48.png",
-        "128": "icon128.png"
-    },
-    "description": "Inserts the current date and time at the cursor.",
-    "permissions": [
-        "contextMenus",
-        "activeTab",
-        "scripting"
-    ],
-    "background": {
-        "service_worker": "background.js"
-    },
-    "commands": {
-        "run-insertTimeStamp": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+Y",
-                "mac": "Command+Shift+Y"
-            },
-            "description": "Insert time stamp"
-        },
-        "run-insertPendingStamp": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+P",
-                "mac": "Command+Shift+P"
-            },
-            "description": "Insert pending stamp"
-        }
-    },
-    "action": {
-        "default_popup": "popup.html",
-        "default_icon": "icon128.png"
-    }
+   "action": {
+      "default_icon": "icon128.png",
+      "default_popup": "popup.html"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "commands": {
+      "run-insertPendingStamp": {
+         "description": "Insert pending stamp",
+         "suggested_key": {
+            "default": "Ctrl+Shift+P",
+            "mac": "Command+Shift+P"
+         }
+      },
+      "run-insertTimeStamp": {
+         "description": "Insert time stamp",
+         "suggested_key": {
+            "default": "Ctrl+Shift+Y",
+            "mac": "Command+Shift+Y"
+         }
+      }
+   },
+   "description": "Inserts the current date and time at the cursor.",
+   "icons": {
+      "128": "icon128.png",
+      "16": "icon16.png",
+      "19": "icon19.png",
+      "32": "icon32.png",
+      "38": "icon38.png",
+      "48": "icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkN1OCl/dLUw4il/wpDBNdNhya7I2knx3qjZrGRHCjrcB/JGozCXxTsTUiIf6+Tn4sEqsES55L+Q3lyysPVIqkLYxct66o/hfQPgIhC67TKwyBQp3QMxR7N/XnJyWKIpYYun/USqFU5LDxIH+9Ou4L0bWgDKxeCZOTcsrbaDrSKLup/fuu7qBbVPMa3m8yAHXlRj+of5eaOMaJ8mD80vTU4caMJAidScBL46AZzCEWzCvhTaOK8HS0fIPm48lDYF6aKuw+IDSTI77d/UVrIgmgN/DyrKISdXx+00BnkThM2m3ZNloPDMrVxDxwlH8KX4ltVqzrWWOdL1lkI7/lzXUQwIDAQAB",
+   "manifest_version": 3,
+   "name": "Date Stamp",
+   "permissions": [ "contextMenus", "activeTab", "scripting" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.81"
 }

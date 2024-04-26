@@ -12,20 +12,22 @@ chrome.runtime.onInstalled.addListener(() => {
         //'id' is used to refer to our menu item in our code.
         id: 'dateStamp'
     });
+
+    chrome.contextMenus.create({
+
+        //'title' will show up in the context menu
+        title: 'Insert Pending Stamp',
+
+        //'contexts' is used to tell when our context menu item should be displayed, 
+        //editable will restrict it to text boxes and the like
+        contexts: ['editable'],
+
+        //'id' is used to refer to our menu item in our code.
+        id: 'pendingStamp'
+    });
+
 });
 
-chrome.contextMenus.create({
-
-    //'title' will show up in the context menu
-    title: 'Insert Pending Stamp',
-
-    //'contexts' is used to tell when our context menu item should be displayed, 
-    //editable will restrict it to text boxes and the like
-    contexts: ['editable'],
-
-    //'id' is used to refer to our menu item in our code.
-    id: 'pendingStamp'
-});
 
 //[1]
 //onClicked: this is an event that triggers when you click something, in this case: the context menu
@@ -84,9 +86,15 @@ function insertPendingStamp() {
     var activeElement = document.activeElement;
     if (activeElement.tagName.toLowerCase() === "input" || activeElement.tagName.toLowerCase() === "textarea") {
         let now = new Date();
-        let shortDate = (now.getMonth() + 1) + "/" + now.getDay();
+        let shortDate = (now.getMonth() + 1) + "/" + now.getDate();
         let pendingStamp = "PENDING " + shortDate;
-        activeElement.value = pendingStamp + "\n\n" + activeElement.value;
+	
+	if (activeElement.value.substring(0,15).includes("PENDING")) {
+	    let dateIndex = activeElement.value.indexOf("\n");
+	    activeElement.value = pendingStamp + activeElement.value.substring(dateIndex);
+	} else {
+            activeElement.value = pendingStamp + "\n\n" + activeElement.value;
+	}
     }
 }
 
