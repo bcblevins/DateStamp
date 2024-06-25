@@ -26,6 +26,19 @@ chrome.runtime.onInstalled.addListener(() => {
         id: 'pendingStamp'
     });
 
+    chrome.contextMenus.create({
+
+        //'title' will show up in the context menu
+        title: 'Format',
+
+        //'contexts' is used to tell when our context menu item should be displayed, 
+        //editable will restrict it to text boxes and the like
+        contexts: ['editable'],
+
+        //'id' is used to refer to our menu item in our code.
+        id: 'format'
+    });
+
 });
 
 
@@ -55,6 +68,14 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
             function: insertPendingStamp
         });
     }
+    if (info.menuItemId === "format") {
+
+        chrome.scripting.executeScript({
+
+            target: { tabId: tab.id },
+            function: formatText
+        });
+    }
 });
 
 //Adds Keyboard shortcut capability
@@ -75,9 +96,9 @@ chrome.commands.onCommand.addListener(function (command, tab) {
 
 //function that is called above
 function insertTimeStamp() {
+    console.log("hello");
     let now = new Date();
     let stamp = now.toLocaleString();
-
     //
     document.execCommand('insertText', false, stamp);
 }
@@ -98,6 +119,21 @@ function insertPendingStamp() {
     }
 }
 
+function formatText() {
+    var activeElement = document.activeElement;
+    const re = /\d{1,2}\/\d{1,2}\/\d{4}, \d{1,2}:\d{2}:\d{2} [a-zA-Z]{2}/;
+    let matchIndexes = [];
+    if (activeElement.tagName.toLowerCase() === "input" || activeElement.tagName.toLowerCase() === "textarea") {
+        while ((match = re.exec(str)) != null) {
+            matchIndexes.push(match.index)
+        }
+
+        for (let matchIndex of matchIndexes) {
+            activeElement.value = activeElement.value.substring(0, matchIndex) + "\n--\n" + activeElement.value.substring(matchIndex)
+        }
+    }
+}
+
 //SOURCES FOR NOTES:
 
 //[1] Context Menus:
@@ -106,3 +142,7 @@ function insertPendingStamp() {
 //[2] Scripting:
 //https://developer.chrome.com/docs/extensions/reference/api/scripting
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Toggle context menu options

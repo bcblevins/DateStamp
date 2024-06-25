@@ -4,33 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chrome Extension Popup</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 1px;
-            text-align: center;
-        }
-
-        #logo {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 10px;
-            margin-left: 20px;
-            margin-right: 20px;
-        }
-
-        h1 {
-            margin-top: 0;
-        }
-    </style>
+    <title> Date Stamp</title>
+    <link rel="icon" href="icon48.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <img id="logo" src="icon48.png" alt="Date Stamp">
-    <p id="current-time"></p>
-    
-    <script src="popup.js"></script>
+    <section id="main-container">
+        <img id="logo" src="icon128.png" alt="Date Stamp">
+        <span class="separator"></span>
+        <section id="toggles-container">
+            <section class="switch-container">
+                <label for="timestamp-switch" class="toggle-label">Date Stamp: </label>
+                <label class="switch" name="timestamp-switch">
+                    <input type="checkbox" name="timestamp" id="timestamp">
+                    <span class="slider"></span>
+                </label>
+            </section>
+            <section class="switch-container">
+                <label for="pending-switch" class="toggle-label">Pending Stamp: </label>
+                <label class="switch" name="pending-switch">
+                    <input type="checkbox" name="pending" id="pending">
+                    <span class="slider"></span>
+                </label>
+            </section>
+            <section class="switch-container">
+                <label for="format-switch" class="toggle-label">Format: </label>
+                <label class="switch" name="pending-switch">
+                    <input type="checkbox" name="format" id="format">
+                    <span class="slider"></span>
+                </label>
+            </section>
+
+        </section>
+    </section>
+                    <script src="popup.js"></script>
+
 </body>
 
 </html>
