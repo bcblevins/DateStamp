@@ -26,18 +26,7 @@ chrome.runtime.onInstalled.addListener(() => {
         id: 'pendingStamp'
     });
 
-    chrome.contextMenus.create({
 
-        //'title' will show up in the context menu
-        title: 'Format',
-
-        //'contexts' is used to tell when our context menu item should be displayed, 
-        //editable will restrict it to text boxes and the like
-        contexts: ['editable'],
-
-        //'id' is used to refer to our menu item in our code.
-        id: 'format'
-    });
 
 });
 
@@ -68,14 +57,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
             function: insertPendingStamp
         });
     }
-    if (info.menuItemId === "format") {
 
-        chrome.scripting.executeScript({
-
-            target: { tabId: tab.id },
-            function: formatText
-        });
-    }
 });
 
 //Adds Keyboard shortcut capability

@@ -36,5 +36,5 @@
    "name": "Date Stamp",
    "permissions": [ "contextMenus", "activeTab", "scripting", "storage" ],
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "0.81"
+   "version": "0.90"
 }
