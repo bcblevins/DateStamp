@@ -116,6 +116,13 @@ function formatText() {
     }
 }
 
+// Messages
+chrome.runtime.onMessage.addListener((request) => {
+    if (request === "openShortcuts") {
+        chrome.tabs.create({ url: "chrome://extensions/shortcuts" });
+    }
+})
+
 //SOURCES FOR NOTES:
 
 //[1] Context Menus:
