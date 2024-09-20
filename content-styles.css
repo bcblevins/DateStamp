@@ -92,6 +92,7 @@ body {
 }
 
 #datestamp-menu.hidden {
+  display: none;
   opacity: 0;
   transition: .1s;
 }
