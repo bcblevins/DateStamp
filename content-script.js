@@ -14,23 +14,27 @@ function toggleHighlightPending() {
 
     let now = new Date();
     let today = (now.getMonth() + 1) + "/" + now.getDate();
-    let yesterday = (now.getMonth() + 1) + "/" + (now.getDate() - 1);
 
-    let blue3 = "rgba(90, 245, 245, 0.61)"
-    let blue2 = "rgba(110, 255, 255, 0.473)"
-    let blue1 = "rgba(110, 255, 255, 0.233)"
+    let blue2 = "rgba(151, 255, 255, 0.705)"
+    let blue1 = "rgba(151, 255, 255, 0.22)"
     
 
     for (let com of comms) {
 
-        let cell = com.parentNode.parentNode.parentNode
+        let cell = com.parentNode.parentNode.parentNode.parentNode.parentNode
+        let headerCell = cell.previousElementSibling;
 
         if (com.innerText.includes("PENDING " + today)) {
-            cell = blue1
-        } else if (com.innerText.includes("PENDING " + yesterday)) {
-            cell = blue2
+            cell.style.backgroundColor = blue1
+            headerCell.style.backgroundColor = blue1
         } else if (com.innerText.includes("PENDING")) {
-            cell = blue3
+            cell.style.backgroundColor = blue2
+            headerCell.style.backgroundColor = blue2
+        } else {
+            // cell.style.borderBottom = "1px solid black"
+            // headerCell.style.borderTop = "1px solid black"
+            cell.style.borderInline = "1px solid black"
+            headerCell.style.borderInline = "1px solid black"
         }
         // com.style.backgroundColor = "#0844b4"
         // console.log(com)
