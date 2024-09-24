@@ -1,5 +1,5 @@
 let menuHidden = false;
-let toggleHighlight = false;
+let interval = null;
 
 function toggleMenu() {
     menu.classList.toggle("hidden")
@@ -42,6 +42,7 @@ function highlightPending() {
     }
 }
 
+
 // Create bubble
 const bubble = document.createElement("div");
 bubble.id = "bubble"
@@ -61,9 +62,7 @@ heading.id = "datestamp-heading"
 const pendingButton = document.createElement("button")
 pendingButton.innerText = "Highlight Pending"
 pendingButton.id = "pending-button"
-pendingButton.addEventListener("click", () => {
-    toggleHighlight = !toggleHighlight;
-})
+pendingButton.addEventListener("click", toggleConstantHighlight)
 
 const shortcutsButton = document.createElement("button")
 shortcutsButton.innerText = "Set Shortcuts"
@@ -89,10 +88,24 @@ document.body.appendChild(menu)
 
 
 // EXPERIMENT
-async function constantHighlight() {
-    while (toggleHighlight) {
-        setTimeout(highlightPending, 1000)
+async function toggleConstantHighlight() {
+    chrome.storage.local.get("highlighted", (data) => {
+        constantHighlight(!data.highlighted)
+        chrome.storage.local.set({"highlighted": !data.highlighted})
+    })
+
+
+}
+
+async function constantHighlight(highlighted) {
+    if(highlighted) {
+        interval = setInterval(highlightPending, 1000)
+        pendingButton.style.backgroundColor = "rgba(151, 255, 255, 0.705)";
+    } else {
+        clearInterval(interval)
+        pendingButton.style.backgroundColor = "white";
     }
 }
+constantHighlight();
 
 

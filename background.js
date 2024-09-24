@@ -26,6 +26,7 @@ chrome.runtime.onInstalled.addListener(() => {
         id: 'pendingStamp'
     });
 
+    chrome.storage.local.set({"highlighted": false});
 
 
 });
