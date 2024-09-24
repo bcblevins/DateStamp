@@ -1,4 +1,5 @@
 let menuHidden = false;
+let toggleHighlight = false;
 
 function toggleMenu() {
     menu.classList.toggle("hidden")
@@ -9,7 +10,7 @@ function toggleActive(element) {
     element.classList.toggle("active")
 }
 
-function toggleHighlightPending() {
+function highlightPending() {
     let comms = document.querySelectorAll(".showMoreContent")
 
     let now = new Date();
@@ -60,7 +61,9 @@ heading.id = "datestamp-heading"
 const pendingButton = document.createElement("button")
 pendingButton.innerText = "Highlight Pending"
 pendingButton.id = "pending-button"
-pendingButton.addEventListener("click", toggleHighlightPending)
+pendingButton.addEventListener("click", () => {
+    toggleHighlight = !toggleHighlight;
+})
 
 const shortcutsButton = document.createElement("button")
 shortcutsButton.innerText = "Set Shortcuts"
@@ -83,5 +86,13 @@ shortcutsButton.addEventListener("click", () => {
 // Add elements to page
 document.body.appendChild(bubble);
 document.body.appendChild(menu)
+
+
+// EXPERIMENT
+async function constantHighlight() {
+    while (toggleHighlight) {
+        setTimeout(highlightPending, 1000)
+    }
+}
 
 
