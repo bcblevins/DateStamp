@@ -120,12 +120,14 @@ function prependInitials() {
         if (activeElement.value.substring(0, 17).includes("in progress\n\n")) {
             activeElement.value = activeElement.value.substring(16);
         } else {
-            let initials = document.querySelector(
+            let initialsElement = document.querySelector(
                 "#header > div.sc-gtsrHT.sc-jQAxuV.sc-fuISkM.dqwRck.hsWAsh.cHQuCr > div.sc-fcmMJX.cWiLXV > div > div:nth-child(6) > div > label"
             );
 
+            let initials = (initialsElement.innerText === "JJ") ? "Q" : initialsElement.innerText;
+
             activeElement.value =
-                initials.innerText + " in progress" + "\n\n" + activeElement.value;
+                initials + " in progress" + "\n\n" + activeElement.value;
         }
     }
 }
