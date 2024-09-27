@@ -90,9 +90,11 @@ async function constantHighlight(highlighted) {
     if(highlighted) {
         interval = setInterval(highlightPending, 1000)
         pendingButton.style.backgroundColor = "rgba(151, 255, 255, 0.705)";
+        bubble.style.boxShadow = "0px 2px 5px 2px rgba(151, 255, 255, 0.705)";
     } else {
         clearInterval(interval)
         pendingButton.style.backgroundColor = "white";
+        bubble.style.boxShadow = "0px 2px 5px #04243a9c";
     }
 }
 
