@@ -117,7 +117,7 @@ function prependInitials() {
         activeElement.tagName.toLowerCase() === "input" ||
         activeElement.tagName.toLowerCase() === "textarea"
     ) {
-        if (activeElement.value.substring(0, 17).includes("in progress\n\n")) {
+        if (activeElement.value.substring(3, 17).includes("in progress\n\n")) {
             activeElement.value = activeElement.value.substring(16);
         } else {
             let initialsElement = document.querySelector(

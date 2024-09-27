@@ -53,7 +53,7 @@ heading.innerHTML = "Date Stamp";
 heading.id = "datestamp-heading";
 
 const pendingButton = document.createElement("button");
-pendingButton.innerText = "Highlight Pending";
+pendingButton.innerText = "Highlight Comms";
 pendingButton.id = "pending-button";
 pendingButton.addEventListener("click", toggleConstantHighlight);
 
