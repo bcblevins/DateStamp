@@ -14,6 +14,17 @@ function toggleActive(element) {
 }
 
 function highlightPending() {
+
+  // If comms tab not active, skip highlighting
+  let tabs = document.querySelectorAll(".subTabLabel")
+  for (let tab of tabs) {
+      if (tab.innerText === "Communication") {
+	  if (!Array.from(tab.parentNode.parentNode.classList).includes("active")) {
+	      return;
+	  }
+      }
+  }
+
   let comms = document.querySelectorAll(".showMoreContent");
 
   let now = new Date();
