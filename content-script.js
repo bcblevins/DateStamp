@@ -15,22 +15,35 @@ function toggleActive(element) {
 
 function highlightPending() {
 
-  // If comms tab not active, skip highlighting
-  let tabs = document.querySelectorAll(".subTabLabel")
+
+
+  // If dashboard not active, skip highlighting
+  let tabs = document.querySelectorAll(".recordTab")
   for (let tab of tabs) {
-      if (tab.innerText === "Communication") {
-	  if (!Array.from(tab.parentNode.parentNode.classList).includes("active")) {
-	      return;
-	  }
+    if (tab.childNodes[tab.childNodes.length - 1].innerText === "Dashboard") {
+      // dashboard background color will be this specific color if active
+      if (tab.style.backgroundColor === "rgb(251, 201, 19)") {
+        break;
+      } else {
+        return;
       }
+    }
+  }
+
+  // If communication sub-tab not active, skip highlighting
+  let subTabs = document.querySelectorAll(".subTabLabel")
+  for (let subTab of subTabs) {
+    if (subTab.innerText === "Communication") {
+      if (!Array.from(subTab.parentNode.parentNode.classList).includes("active")) {
+        return;
+      }
+    }
   }
 
   let comms = document.querySelectorAll(".showMoreContent");
 
   let now = new Date();
   let today = now.getMonth() + 1 + "/" + now.getDate();
-
-
 
   for (let com of comms) {
     let cell = com.parentNode.parentNode.parentNode.parentNode.parentNode;
@@ -98,19 +111,19 @@ async function toggleConstantHighlight() {
 }
 
 async function constantHighlight(highlighted) {
-    if(highlighted) {
-        interval = setInterval(highlightPending, 1000)
-        pendingButton.style.backgroundColor = "rgba(151, 255, 255, 0.705)";
-        bubble.style.boxShadow = "0px 2px 5px 2px rgba(151, 255, 255, 0.705)";
-    } else {
-        clearInterval(interval)
-        pendingButton.style.backgroundColor = "white";
-        bubble.style.boxShadow = "0px 2px 5px #04243a9c";
-    }
+  if (highlighted) {
+    interval = setInterval(highlightPending, 1000)
+    pendingButton.style.backgroundColor = "rgba(151, 255, 255, 0.705)";
+    bubble.style.boxShadow = "0px 2px 5px 2px rgba(151, 255, 255, 0.705)";
+  } else {
+    clearInterval(interval)
+    pendingButton.style.backgroundColor = "white";
+    bubble.style.boxShadow = "0px 2px 5px #04243a9c";
+  }
 }
 
 chrome.storage.sync.get("highlighted", (data) => {
-	constantHighlight(data.highlighted);
+  constantHighlight(data.highlighted);
 });
 
 chrome.runtime.sendMessage("enableInProgressStamp")
