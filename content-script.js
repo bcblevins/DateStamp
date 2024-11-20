@@ -64,17 +64,17 @@ function highlightPending() {
 
 // Create bubble
 const bubble = document.createElement("div");
-bubble.id = "bubble";
+bubble.classList.add("bubble");
 bubble.innerText = "D";
 
 // Create Menu
 const menu = document.createElement("div");
-menu.id = "datestamp-menu";
+menu.classList.add("datestamp-menu");
 menu.classList.add("hidden");
 
 const heading = document.createElement("h1");
-heading.innerHTML = "Date Stamp";
-heading.id = "datestamp-heading";
+heading.innerText = "Date Stamp";
+heading.classList.add("datestamp-heading");
 
 const pendingButton = document.createElement("button");
 pendingButton.innerText = "Highlight Comms";
