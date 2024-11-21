@@ -89,6 +89,28 @@ body {
     color: var(--main-blue);
     z-index: 1111;
   }
+
+  .macro-menu {
+    width: 50vw;
+    height: 100px;
+    
+    right: calc(17em + 30px + 110px + 10px); /* datestamp-menu(width + padding + right margin) + a little extra */
+    height: fit-content;
+
+    h2 {
+      color: var(--main-darkblue);
+      font-size: 20px;
+    }
+
+    ul {
+      li {
+        span {
+          visibility: hidden;
+        }
+      }
+    }
+
+  }
 }
 
 .datestamp-menu.hidden {
@@ -107,9 +129,7 @@ body {
     transition: .1s;
 }
 
-.macro-menu {
-  width: 50vw;
-}
+
 
 #Nothing {
   background-color: rgba(151, 255, 255, 0.705);

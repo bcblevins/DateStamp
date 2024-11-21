@@ -127,3 +127,91 @@ chrome.storage.sync.get("highlighted", (data) => {
 });
 
 chrome.runtime.sendMessage("enableInProgressStamp")
+
+
+
+// Macro menu
+let actionsList = [
+  { name: 'Insert text', code: 'txt' },
+  { name: 'Insert timestamp', code: 'ts' },
+  { name: 'Insert/update pending stamp', code: 'ps' },
+  { name: 'Toggle "in progress" stamp', code: 'ips' },
+  { name: 'Remove pending stamp', code: 'rps' },
+  { name: 'Remove "updated" stamp', code: 'rus' }
+]
+
+
+let macroMenu = document.createElement("div")
+macroMenu.classList.add("datestamp-menu", "macro-menu")
+
+//Main heading and instructions
+let macroHeading = document.createElement("h1")
+macroHeading.classList.add("datestamp-heading")
+macroHeading.innerText = "Macros"
+
+let instructions = document.createElement("p")
+instructions.innerText = "Quis aliqua veniam eu sit nostrud mollit tempor officia cillum. Ut nisi et et velit veniam sunt cillum minim dolor velit sint. Laborum nulla occaecat laborum incididunt consequat nulla ut Lorem aliquip."
+
+// Template
+let templateHeading = document.createElement("h2")
+templateHeading.innerText = "Template"
+
+let template = document.createElement("div");
+template.id = "template";
+
+// Actions
+let actionsHeading = document.createElement("h2")
+actionsHeading.innerText = "Actions"
+
+let actions = document.createElement("ul")
+actions.id = "actions";
+
+for (let action of actionsList) {
+  console.log(action)
+  let actionLi = document.createElement("li")
+  actionLi.innerText = action.name;
+
+  let code = document.createElement("span");
+  code.innerText = action.code;
+
+  actionLi.appendChild(code);
+
+  actions.appendChild(actionLi)
+}
+
+
+macroMenu.append(macroHeading, instructions, templateHeading, template, actionsHeading, actions)
+menu.appendChild(macroMenu)
+
+
+
+
+/*
+  <div class="datestamp-menu macro-menu">
+    <h1 class="datestamp-heading">Macros</h1>
+    <p> (instructions) </p>
+
+    <h2>Template</h2> 
+    <div id="template">
+      <span>(template stuff)</span>
+      <button>Save</button>
+    </div>
+
+    <h2>Actions</h2>
+    <ul id="actions">
+        <li>
+          "Option" (visible) 
+          <span>
+            code (invisible)
+          </span>
+        </li>
+
+        <li>Insert text</li>
+        <li>Insert timestamp</li>
+        <li>Insert/update pending stamp</li>
+        <li>Toggle "in progress" stamp</li>
+        <li>Remove pending stamp</li>
+        <li>Remove "updated" stamp</li>
+    </ul>
+  </div>
+*/

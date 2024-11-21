@@ -6,28 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="content-styles.css" />
+    <script >let div = document.createElement("div");
+
+        let body = document.querySelector(".datestamp-menu");
+        
+        div.style.backgroundColor("blue");
+        div.style.width("200px");
+        div.style.height("200px");
+        
+        body.appendChild(div);</script>
 </head>
 
-<body class="datestamp-menu macro-menu">
-    <h1 class="datestamp-heading">Macros</h1>
-    <div>
-        <h2>Template</h2>
+<body style="background-color: rgb(59, 54, 49);" >
+    <div class="datestamp-menu macro-menu">
+        <h1 class="datestamp-heading">Macros</h1>
         <div>
-            <button>Save</button>
+            <h2>Template</h2>
+            <div>
+                <button>Save</button>
+            </div>
+        </div>
+        <div>
+            <h2>Actions</h2>
+            <ul>
+                <li>Insert text</li>
+                <li>Insert timestamp</li>
+                <li>Insert/update pending stamp</li>
+                <li>Toggle "in progress" stamp</li>
+                <li>Remove pending stamp</li>
+                <li>Remove "updated" stamp</li>
+            </ul>
         </div>
     </div>
-    <div>
-        <h2>Actions</h2>
-        <ul>
-            <li>Insert text</li>
-            <li>Insert timestamp</li>
-            <li>Insert/update pending stamp</li>
-            <li>Toggle "in progress" stamp</li>
-            <li>Remove pending stamp</li>
-            <li>Remove "updated" stamp</li>
-        </ul>
-    </div>
-    
+
 </body>
 
 </html>

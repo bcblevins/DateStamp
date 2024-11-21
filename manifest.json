@@ -32,7 +32,7 @@
    "content_scripts": [
       {
          "matches": [
-            "https://*.ezyvet.com/*"
+            "https://*.ezyvet.com/*", "https://bcblevins.github.io/"
          ],
          "css": [
             "content-styles.css"
