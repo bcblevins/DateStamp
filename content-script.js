@@ -4,6 +4,8 @@ let pendingPreviousColor = "rgba(151, 255, 255, 0.705)";
 let pendingTodayColor = "rgba(151, 255, 255, 0.22)";
 let updatedColor = "#fffca8"
 
+let macroMenuVisible = false;
+
 function toggleMenu() {
   menu.classList.toggle("hidden");
   bubble.classList.toggle("flat-top");
@@ -85,9 +87,12 @@ const shortcutsButton = document.createElement("button");
 shortcutsButton.innerText = "Set Shortcuts";
 shortcutsButton.id = "shortcuts-button";
 
-menu.appendChild(heading);
-menu.appendChild(shortcutsButton);
-menu.appendChild(pendingButton);
+const macroMenuButton = document.createElement("button");
+macroMenuButton.innerText = "Set Macros";
+macroMenuButton.id = "open-macros";
+macroMenuButton.addEventListener("click", toggleMacroMenu);
+
+menu.append(heading, shortcutsButton, pendingButton, macroMenuButton)
 
 // events
 bubble.addEventListener("click", () => toggleMenu());
@@ -122,6 +127,8 @@ async function constantHighlight(highlighted) {
   }
 }
 
+
+
 chrome.storage.sync.get("highlighted", (data) => {
   constantHighlight(data.highlighted);
 });
@@ -129,8 +136,9 @@ chrome.storage.sync.get("highlighted", (data) => {
 chrome.runtime.sendMessage("enableInProgressStamp")
 
 
-
-// Macro menu
+//////////////
+// Macros
+//////////////
 let actionsList = [
   { name: 'Insert text', code: 'txt' },
   { name: 'Insert timestamp', code: 'ts' },
@@ -143,6 +151,7 @@ let actionsList = [
 
 let macroMenu = document.createElement("div")
 macroMenu.classList.add("datestamp-menu", "macro-menu")
+macroMenu.style.display = "none"; //hide menu by default
 
 //Main heading and instructions
 let macroHeading = document.createElement("h1")
@@ -184,6 +193,18 @@ macroMenu.append(macroHeading, instructions, templateHeading, template, actionsH
 menu.appendChild(macroMenu)
 
 
+
+function toggleMacroMenu() {
+  if (macroMenuVisible) {
+    macroMenuVisible = false;
+    macroMenuButton.style.backgroundColor = "white";
+    macroMenu.style.display = "none"
+  } else {
+    macroMenuVisible = true;
+    macroMenuButton.style.backgroundColor = "rgba(151, 255, 255, 0.705)";
+    macroMenu.style.display = "block";
+  }
+}
 
 
 /*
