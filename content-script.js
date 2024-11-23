@@ -136,9 +136,10 @@ chrome.storage.sync.get("highlighted", (data) => {
 chrome.runtime.sendMessage("enableInProgressStamp")
 
 
-//////////////
+//////////////////////////////////////////////////////
 // Macros
-//////////////
+//////////////////////////////////////////////////////
+
 let actionsList = [
   { name: 'Insert text', code: 'txt' },
   { name: 'Insert timestamp', code: 'ts' },
@@ -148,6 +149,7 @@ let actionsList = [
   { name: 'Remove "updated" stamp', code: 'rus' }
 ]
 
+let activeTemplateList = [];
 
 let macroMenu = document.createElement("div")
 macroMenu.classList.add("datestamp-menu", "macro-menu")
@@ -168,6 +170,10 @@ templateHeading.innerText = "Template"
 let template = document.createElement("div");
 template.id = "template";
 
+let saveButton = document.createElement("button")
+saveButton.innerText = "Save";
+saveButton.addEventListener("click", saveTemplate)
+
 // Actions
 let actionsHeading = document.createElement("h2")
 actionsHeading.innerText = "Actions"
@@ -184,12 +190,15 @@ for (let action of actionsList) {
   code.innerText = action.code;
 
   actionLi.appendChild(code);
+  actionLi.addEventListener("click", () => {
+    createTemplatePiece(action.code)
+  })
 
   actions.appendChild(actionLi)
 }
 
 
-macroMenu.append(macroHeading, instructions, templateHeading, template, actionsHeading, actions)
+macroMenu.append(macroHeading, instructions, templateHeading, template, saveButton, actionsHeading, actions)
 menu.appendChild(macroMenu)
 
 
@@ -203,6 +212,29 @@ function toggleMacroMenu() {
     macroMenuVisible = true;
     macroMenuButton.style.backgroundColor = "rgba(151, 255, 255, 0.705)";
     macroMenu.style.display = "block";
+  }
+}
+
+function createTemplatePiece(code) {
+  if (activeTemplateList.includes(code)) {
+    return;
+  }
+  activeTemplateList.push(code);
+  let piece
+  if (code === "txt") {
+    piece = document.createElement("input")
+    piece.type = "text"
+  } else {
+    piece = document.createElement("span")
+    piece.innerText = code
+  }
+  template.appendChild(piece);
+}
+
+function saveTemplate() {
+  // Remove all template pieces
+  while(template.firstChild) {
+    template.removeChild(template.firstChild)
   }
 }
 
