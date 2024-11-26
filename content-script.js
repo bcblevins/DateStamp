@@ -136,9 +136,9 @@ chrome.storage.sync.get("highlighted", (data) => {
 chrome.runtime.sendMessage("enableInProgressStamp")
 
 
-//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 // Macros
-//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 
 let actionsList = [
   { name: 'Insert text', code: 'txt' },
@@ -232,10 +232,19 @@ function createTemplatePiece(code) {
 }
 
 function saveTemplate() {
+  let macroString = "";
+  for (let macro of activeTemplateList) {
+    macroString += macro;
+  }
+  chrome.runtime.sendMessage({
+    action: "saveMacro",
+    macroString: macroString
+  })
   // Remove all template pieces
   while(template.firstChild) {
     template.removeChild(template.firstChild)
   }
+  activeTemplateList = [];
 }
 
 

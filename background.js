@@ -120,16 +120,22 @@ function prependInitials() {
         if (activeElement.value.substring(3, 17).includes("in progress\n\n")) {
             activeElement.value = activeElement.value.substring(16);
         } else {
-            let initialsElement = document.querySelector(
-                "#header > div.sc-gtsrHT.sc-jQAxuV.sc-fuISkM.dqwRck.hsWAsh.cHQuCr > div.sc-fcmMJX.cWiLXV > div > div:nth-child(6) > div > label"
-            );
-
-            let initials = (initialsElement.innerText === "JJ") ? "Q" : initialsElement.innerText;
-
+            let initials = getInitials();
             activeElement.value =
                 initials + " in progress" + "\n\n" + activeElement.value;
         }
     }
+}
+
+function getInitials() {
+    // Selector copied from website. 
+    let initialsElement = document.querySelector(
+        "#header > div.sc-gtsrHT.sc-jQAxuV.sc-fuISkM.dqwRck.hsWAsh.cHQuCr > div.sc-fcmMJX.cWiLXV > div > div:nth-child(6) > div > label"
+    );
+
+    // initials changed for specific employees
+    return (initialsElement.innerText === "JJ") ? "Q" : initialsElement.innerText;
+
 }
 
 function formatText() {
@@ -162,6 +168,9 @@ chrome.runtime.onMessage.addListener((request) => {
         chrome.contextMenus.update('prependInitials', {
             contexts: ['editable']
         });
+    }
+    if (request.action === "saveMacro") {
+        
     }
 });
 
