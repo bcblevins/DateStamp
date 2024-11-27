@@ -5,6 +5,7 @@
 // 5. Storage
 // 6. Messaging
 
+// TODO: All buttons not working after restructure.
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // 1. Global Variables
@@ -294,11 +295,7 @@ const menu = createMainMenu();
 const macroMenu = createMacroMenu();
 menu.appendChild(macroMenu)
 
-// Add all to dom
-document.body.append(
-  bubble,
-  menu
-)
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // 4. Events
@@ -330,4 +327,6 @@ chrome.storage.sync.get("highlighted", (data) => {
 
 
 chrome.runtime.sendMessage("enableInProgressStamp")
+
+
 
