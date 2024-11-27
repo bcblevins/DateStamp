@@ -1,10 +1,162 @@
+// 1. Global Variables
+// 2. Utility Functions
+// 3. Create UI
+// 4. Events
+// 5. Storage
+// 6. Messaging
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// 1. Global Variables
+//////////////////////////////////////////////////////////////////////////////////////////
+
+// Main
+
 let menuHidden = false;
 let interval = null;
 let pendingPreviousColor = "rgba(151, 255, 255, 0.705)";
 let pendingTodayColor = "rgba(151, 255, 255, 0.22)";
 let updatedColor = "#fffca8"
 
+// Macros
+
 let macroMenuVisible = false;
+let actionsList = [
+  { name: 'Insert text', code: 'txt' },
+  { name: 'Insert timestamp', code: 'ts' },
+  { name: 'Insert/update pending stamp', code: 'ps' },
+  { name: 'Toggle "in progress" stamp', code: 'ips' },
+  { name: 'Remove pending stamp', code: 'rps' },
+  { name: 'Remove "updated" stamp', code: 'rus' }
+]
+
+let activeTemplateList = [];
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// 2. Utility Functions
+//////////////////////////////////////////////////////////////////////////////////////////
+
+// Dom creation //////////////////////////////////////////////////////////////////////////
+
+// Main
+function createBubble() {
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble");
+  bubble.innerText = "D";
+  return bubble
+}
+
+function createMainMenu() {
+  const menu = document.createElement("div");
+  menu.classList.add("datestamp-menu");
+  menu.classList.add("hidden");
+
+  const heading = document.createElement("h1");
+  heading.innerText = "Date Stamp";
+  heading.classList.add("datestamp-heading");
+
+  const pendingButton = document.createElement("button");
+  pendingButton.innerText = "Highlight Comms";
+  pendingButton.id = "pending-button";
+  pendingButton.addEventListener("click", toggleConstantHighlight);
+
+  const shortcutsButton = document.createElement("button");
+  shortcutsButton.innerText = "Set Shortcuts";
+  shortcutsButton.id = "shortcuts-button";
+
+  const macroMenuButton = document.createElement("button");
+  macroMenuButton.innerText = "Set Macros";
+  macroMenuButton.id = "open-macros";
+  macroMenuButton.addEventListener("click", toggleMacroMenu);
+
+  menu.append(heading, shortcutsButton, pendingButton, macroMenuButton);
+
+  return menu;
+}
+
+// Macros
+
+function createMacroMenu() {
+  let macroMenu = document.createElement("div")
+  macroMenu.classList.add("datestamp-menu", "macro-menu")
+  macroMenu.style.display = "none"; //hide menu by default
+
+  let macroHeading = createHeading("h1", "Macros", "datestamp-heading")
+  let instructions = createMacroInstructions("Quis aliqua veniam eu sit nostrud mollit tempor officia cillum. Ut nisi et et velit veniam sunt cillum minim dolor velit sint. Laborum nulla occaecat laborum incididunt consequat nulla ut Lorem aliquip.");
+  let templateHeading = createHeading("h2", "Template", null)
+  let templateSection = createTemplateSection();
+  let saveButton = createSaveButton();
+  let actionsHeading = createHeading("h2", "Actions", null)
+  let actions = createActions(actionsList);
+
+  macroMenu.append(
+    macroHeading,
+    instructions,
+    templateHeading,
+    templateSection,
+    saveButton,
+    actionsHeading,
+    actions
+  )
+
+  return macroMenu;
+}
+
+function createMacroInstructions(text) {
+  let instructions = document.createElement("p")
+  instructions.innerText = text
+  return instructions;
+}
+
+function createHeading(headingType, text, className) {
+  let heading = document.createElement(headingType);
+  heading.innerText = text;
+  if (className != null) {
+    heading.classList.add(className)
+  }
+
+  return heading;
+}
+
+function createTemplateSection() {
+  let template = document.createElement("div");
+  return template;
+}
+
+function createSaveButton() {
+  let saveButton = document.createElement("button")
+  saveButton.innerText = "Save";
+  saveButton.addEventListener("click", saveTemplate)
+  return saveButton;
+}
+
+function createActions(actionsList) {
+  let actions = document.createElement("ul")
+  actions.id = "actions";
+
+  for (let action of actionsList) {
+    console.log(action)
+    let actionLi = document.createElement("li")
+    actionLi.innerText = action.name;
+
+    let code = document.createElement("span");
+    code.innerText = action.code;
+
+    actionLi.appendChild(code);
+    actionLi.addEventListener("click", () => {
+      createTemplatePiece(action.code)
+    })
+
+    actions.appendChild(actionLi)
+  }
+
+  return actions;
+}
+
+// Dom Manipulation ////////////////////////////////////////////////////////////////////////
+
+// Menus
 
 function toggleMenu() {
   menu.classList.toggle("hidden");
@@ -15,10 +167,21 @@ function toggleActive(element) {
   element.classList.toggle("active");
 }
 
+function toggleMacroMenu() {
+  if (macroMenuVisible) {
+    macroMenuVisible = false;
+    macroMenuButton.style.backgroundColor = "white";
+    macroMenu.style.display = "none"
+  } else {
+    macroMenuVisible = true;
+    macroMenuButton.style.backgroundColor = "rgba(151, 255, 255, 0.705)";
+    macroMenu.style.display = "block";
+  }
+}
+
+// Highlighting Comms
+
 function highlightPending() {
-
-
-
   // If dashboard not active, skip highlighting
   let tabs = document.querySelectorAll(".recordTab")
   for (let tab of tabs) {
@@ -64,50 +227,6 @@ function highlightPending() {
   }
 }
 
-// Create bubble
-const bubble = document.createElement("div");
-bubble.classList.add("bubble");
-bubble.innerText = "D";
-
-// Create Menu
-const menu = document.createElement("div");
-menu.classList.add("datestamp-menu");
-menu.classList.add("hidden");
-
-const heading = document.createElement("h1");
-heading.innerText = "Date Stamp";
-heading.classList.add("datestamp-heading");
-
-const pendingButton = document.createElement("button");
-pendingButton.innerText = "Highlight Comms";
-pendingButton.id = "pending-button";
-pendingButton.addEventListener("click", toggleConstantHighlight);
-
-const shortcutsButton = document.createElement("button");
-shortcutsButton.innerText = "Set Shortcuts";
-shortcutsButton.id = "shortcuts-button";
-
-const macroMenuButton = document.createElement("button");
-macroMenuButton.innerText = "Set Macros";
-macroMenuButton.id = "open-macros";
-macroMenuButton.addEventListener("click", toggleMacroMenu);
-
-menu.append(heading, shortcutsButton, pendingButton, macroMenuButton)
-
-// events
-bubble.addEventListener("click", () => toggleMenu());
-
-shortcutsButton.addEventListener("click", () => {
-  chrome.runtime.sendMessage("openShortcuts");
-});
-
-// pendingButton.addEventListener("click", () => toggleActive(pendingButton))
-
-// Add elements to page
-document.body.appendChild(bubble);
-document.body.appendChild(menu);
-
-// EXPERIMENT
 async function toggleConstantHighlight() {
   chrome.storage.sync.get("highlighted", (data) => {
     constantHighlight(!data.highlighted);
@@ -127,93 +246,7 @@ async function constantHighlight(highlighted) {
   }
 }
 
-
-
-chrome.storage.sync.get("highlighted", (data) => {
-  constantHighlight(data.highlighted);
-});
-
-chrome.runtime.sendMessage("enableInProgressStamp")
-
-
-//////////////////////////////////////////////////////////////////////////////////////
 // Macros
-//////////////////////////////////////////////////////////////////////////////////////
-
-let actionsList = [
-  { name: 'Insert text', code: 'txt' },
-  { name: 'Insert timestamp', code: 'ts' },
-  { name: 'Insert/update pending stamp', code: 'ps' },
-  { name: 'Toggle "in progress" stamp', code: 'ips' },
-  { name: 'Remove pending stamp', code: 'rps' },
-  { name: 'Remove "updated" stamp', code: 'rus' }
-]
-
-let activeTemplateList = [];
-
-let macroMenu = document.createElement("div")
-macroMenu.classList.add("datestamp-menu", "macro-menu")
-macroMenu.style.display = "none"; //hide menu by default
-
-//Main heading and instructions
-let macroHeading = document.createElement("h1")
-macroHeading.classList.add("datestamp-heading")
-macroHeading.innerText = "Macros"
-
-let instructions = document.createElement("p")
-instructions.innerText = "Quis aliqua veniam eu sit nostrud mollit tempor officia cillum. Ut nisi et et velit veniam sunt cillum minim dolor velit sint. Laborum nulla occaecat laborum incididunt consequat nulla ut Lorem aliquip."
-
-// Template
-let templateHeading = document.createElement("h2")
-templateHeading.innerText = "Template"
-
-let template = document.createElement("div");
-template.id = "template";
-
-let saveButton = document.createElement("button")
-saveButton.innerText = "Save";
-saveButton.addEventListener("click", saveTemplate)
-
-// Actions
-let actionsHeading = document.createElement("h2")
-actionsHeading.innerText = "Actions"
-
-let actions = document.createElement("ul")
-actions.id = "actions";
-
-for (let action of actionsList) {
-  console.log(action)
-  let actionLi = document.createElement("li")
-  actionLi.innerText = action.name;
-
-  let code = document.createElement("span");
-  code.innerText = action.code;
-
-  actionLi.appendChild(code);
-  actionLi.addEventListener("click", () => {
-    createTemplatePiece(action.code)
-  })
-
-  actions.appendChild(actionLi)
-}
-
-
-macroMenu.append(macroHeading, instructions, templateHeading, template, saveButton, actionsHeading, actions)
-menu.appendChild(macroMenu)
-
-
-
-function toggleMacroMenu() {
-  if (macroMenuVisible) {
-    macroMenuVisible = false;
-    macroMenuButton.style.backgroundColor = "white";
-    macroMenu.style.display = "none"
-  } else {
-    macroMenuVisible = true;
-    macroMenuButton.style.backgroundColor = "rgba(151, 255, 255, 0.705)";
-    macroMenu.style.display = "block";
-  }
-}
 
 function createTemplatePiece(code) {
   if (activeTemplateList.includes(code)) {
@@ -241,39 +274,60 @@ function saveTemplate() {
     macroString: macroString
   })
   // Remove all template pieces
-  while(template.firstChild) {
+  while (template.firstChild) {
     template.removeChild(template.firstChild)
   }
   activeTemplateList = [];
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
+// 3. Create UI
+//////////////////////////////////////////////////////////////////////////////////////////
 
-/*
-  <div class="datestamp-menu macro-menu">
-    <h1 class="datestamp-heading">Macros</h1>
-    <p> (instructions) </p>
+// Create bubble
+const bubble = createBubble();
 
-    <h2>Template</h2> 
-    <div id="template">
-      <span>(template stuff)</span>
-      <button>Save</button>
-    </div>
+// Create Menu
+const menu = createMainMenu();
 
-    <h2>Actions</h2>
-    <ul id="actions">
-        <li>
-          "Option" (visible) 
-          <span>
-            code (invisible)
-          </span>
-        </li>
+// Create Macro Menu
+const macroMenu = createMacroMenu();
+menu.appendChild(macroMenu)
 
-        <li>Insert text</li>
-        <li>Insert timestamp</li>
-        <li>Insert/update pending stamp</li>
-        <li>Toggle "in progress" stamp</li>
-        <li>Remove pending stamp</li>
-        <li>Remove "updated" stamp</li>
-    </ul>
-  </div>
-*/
+// Add all to dom
+document.body.append(
+  bubble,
+  menu
+)
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// 4. Events
+//////////////////////////////////////////////////////////////////////////////////////////
+
+bubble.addEventListener("click", () => toggleMenu());
+
+shortcutsButton.addEventListener("click", () => {
+  chrome.runtime.sendMessage("openShortcuts");
+});
+
+window.addEventListener("unload", () => {
+  clearInterval(interval);
+});
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// 5. Storage
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+chrome.storage.sync.get("highlighted", (data) => {
+  constantHighlight(data.highlighted);
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// 6. Messaging
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+chrome.runtime.sendMessage("enableInProgressStamp")
+
