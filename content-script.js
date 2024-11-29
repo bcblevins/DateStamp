@@ -5,7 +5,6 @@
 // 5. Storage
 // 6. Messaging
 
-// TODO: All buttons not working after restructure.
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // 1. Global Variables
@@ -15,9 +14,15 @@
 
 let menuHidden = false;
 let interval = null;
-let pendingPreviousColor = "rgba(151, 255, 255, 0.705)";
-let pendingTodayColor = "rgba(151, 255, 255, 0.22)";
-let updatedColor = "#fffca8"
+let colors = {
+  mainBlue: "#0844b4",
+  lighterBlue: "rgba(151, 255, 255, 0.22)",
+  lightBlue: "rgba(151, 255, 255, 0.705)",
+  yellow: "#fffca8",
+  shadowColor: "#04243a9c",
+  dashboardColor: "rgb(251, 201, 19)"
+
+}
 
 // Macros
 
@@ -59,16 +64,19 @@ function createMainMenu() {
 
   const pendingButton = document.createElement("button");
   pendingButton.innerText = "Highlight Comms";
-  pendingButton.id = "pending-button";
+  pendingButton.id = "pending-button-DATESTAMP";
   pendingButton.addEventListener("click", toggleConstantHighlight);
 
   const shortcutsButton = document.createElement("button");
   shortcutsButton.innerText = "Set Shortcuts";
   shortcutsButton.id = "shortcuts-button";
+  shortcutsButton.addEventListener("click", () => {
+    chrome.runtime.sendMessage("openShortcuts");
+  });
 
   const macroMenuButton = document.createElement("button");
   macroMenuButton.innerText = "Set Macros";
-  macroMenuButton.id = "open-macros";
+  macroMenuButton.id = "open-macros-DATESTAMP";
   macroMenuButton.addEventListener("click", toggleMacroMenu);
 
   menu.append(heading, shortcutsButton, pendingButton, macroMenuButton);
@@ -137,7 +145,6 @@ function createActions(actionsList) {
   actions.id = "actions";
 
   for (let action of actionsList) {
-    console.log(action)
     let actionLi = document.createElement("li")
     actionLi.innerText = action.name;
 
@@ -162,6 +169,8 @@ function createActions(actionsList) {
 function toggleMenu() {
   menu.classList.toggle("hidden");
   bubble.classList.toggle("flat-top");
+  // Hide macro menu when main menu closes to keep it hidden on reopen.
+  hideMacroMenu();
 }
 
 function toggleActive(element) {
@@ -169,15 +178,21 @@ function toggleActive(element) {
 }
 
 function toggleMacroMenu() {
+  let macroMenuButton = document.getElementById("open-macros-DATESTAMP")
   if (macroMenuVisible) {
-    macroMenuVisible = false;
-    macroMenuButton.style.backgroundColor = "white";
-    macroMenu.style.display = "none"
+    hideMacroMenu()
   } else {
     macroMenuVisible = true;
-    macroMenuButton.style.backgroundColor = "rgba(151, 255, 255, 0.705)";
+    macroMenuButton.style.backgroundColor = colors.lightBlue;
     macroMenu.style.display = "block";
   }
+}
+
+function hideMacroMenu() {
+  let macroMenuButton = document.getElementById("open-macros-DATESTAMP")
+  macroMenuVisible = false;
+  macroMenuButton.style.backgroundColor = "white";
+  macroMenu.style.display = "none"
 }
 
 // Highlighting Comms
@@ -188,7 +203,7 @@ function highlightPending() {
   for (let tab of tabs) {
     if (tab.childNodes[tab.childNodes.length - 1].innerText === "Dashboard") {
       // dashboard background color will be this specific color if active
-      if (tab.style.backgroundColor === "rgb(251, 201, 19)") {
+      if (tab.style.backgroundColor === colors.dashboardColor) {
         break;
       } else {
         return;
@@ -216,14 +231,14 @@ function highlightPending() {
     let headerCell = cell.previousElementSibling;
 
     if (com.innerText.includes("PENDING " + today)) {
-      cell.style.backgroundColor = pendingTodayColor;
-      headerCell.style.backgroundColor = pendingTodayColor;
+      cell.style.backgroundColor = colors.lighterBlue;
+      headerCell.style.backgroundColor = colors.lighterBlue;
     } else if (com.innerText.includes("PENDING")) {
-      cell.style.backgroundColor = pendingPreviousColor;
-      headerCell.style.backgroundColor = pendingPreviousColor;
+      cell.style.backgroundColor = colors.lightBlue;
+      headerCell.style.backgroundColor = colors.lightBlue;
     } else if (com.innerText.includes("UPDATED")) {
-      cell.style.backgroundColor = updatedColor;
-      headerCell.style.backgroundColor = updatedColor;
+      cell.style.backgroundColor = colors.yellow;
+      headerCell.style.backgroundColor = colors.yellow;
     }
   }
 }
@@ -236,14 +251,15 @@ async function toggleConstantHighlight() {
 }
 
 async function constantHighlight(highlighted) {
+  let pendingButton = document.getElementById("pending-button-DATESTAMP")
   if (highlighted) {
     interval = setInterval(highlightPending, 1000)
-    pendingButton.style.backgroundColor = "rgba(151, 255, 255, 0.705)";
-    bubble.style.boxShadow = "0px 2px 5px 2px rgba(151, 255, 255, 0.705)";
+    pendingButton.style.backgroundColor = colors.lightBlue;
+    bubble.classList.add("light-blue-shadow");
   } else {
     clearInterval(interval)
     pendingButton.style.backgroundColor = "white";
-    bubble.style.boxShadow = "0px 2px 5px #04243a9c";
+    bubble.classList.remove("light-blue-shadow");
   }
 }
 
@@ -295,6 +311,7 @@ const menu = createMainMenu();
 const macroMenu = createMacroMenu();
 menu.appendChild(macroMenu)
 
+document.body.append(bubble, menu)
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -303,9 +320,7 @@ menu.appendChild(macroMenu)
 
 bubble.addEventListener("click", () => toggleMenu());
 
-shortcutsButton.addEventListener("click", () => {
-  chrome.runtime.sendMessage("openShortcuts");
-});
+
 
 window.addEventListener("unload", () => {
   clearInterval(interval);

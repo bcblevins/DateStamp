@@ -1,6 +1,7 @@
 body {
   --main-blue: #0844b4;
   --main-darkblue: #212d42;
+  --light-blue: rgba(151, 255, 255, 0.705)
 }
 
 .bubble {
@@ -33,7 +34,10 @@ body {
   border-top-right-radius: 0px;
   background: white;
   color: var(--main-blue);
-  box-shadow: 0px 5px 5px -5px var(--main-blue);
+  z-index: 1000;
+}
+.bubble.light-blue-shadow {
+  box-shadow: 0px 2px 5px 2px var(--light-blue)
 }
 /* #bubble.flat-top:hover {
   background-color: color-mix(in srgb, var(--main-blue) 80%, white 20%);
@@ -42,7 +46,7 @@ body {
 } */
 .datestamp-menu {
   position: fixed;
-  bottom: 40px;
+  bottom: 50px;
   right: 110px;
   padding: 15px;
   float: left;
