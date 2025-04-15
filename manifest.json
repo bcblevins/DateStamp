@@ -7,11 +7,18 @@
       "service_worker": "background.js"
    },
    "commands": {
+      "run-insertInProgress": {
+         "description": "Insert \"in progress\" stamp",
+         "suggested_key": {
+            "default": "Ctrl+I",
+            "mac": "Command+I"
+         }
+      },
       "run-insertPendingStamp": {
          "description": "Insert pending stamp",
          "suggested_key": {
-            "default": "Ctrl+Shift+P",
-            "mac": "Command+Shift+P"
+            "default": "Ctrl+Shift+D",
+            "mac": "Command+Shift+D"
          }
       },
       "run-insertTimeStamp": {
@@ -22,6 +29,11 @@
          }
       }
    },
+   "content_scripts": [ {
+      "css": [ "content-styles.css" ],
+      "js": [ "content-script.js" ],
+      "matches": [ "https://*.ezyvet.com/*" ]
+   } ],
    "description": "Inserts the current date and time at the cursor.",
    "icons": {
       "128": "icon128.png",
@@ -31,10 +43,8 @@
       "38": "icon38.png",
       "48": "icon48.png"
    },
-   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkN1OCl/dLUw4il/wpDBNdNhya7I2knx3qjZrGRHCjrcB/JGozCXxTsTUiIf6+Tn4sEqsES55L+Q3lyysPVIqkLYxct66o/hfQPgIhC67TKwyBQp3QMxR7N/XnJyWKIpYYun/USqFU5LDxIH+9Ou4L0bWgDKxeCZOTcsrbaDrSKLup/fuu7qBbVPMa3m8yAHXlRj+of5eaOMaJ8mD80vTU4caMJAidScBL46AZzCEWzCvhTaOK8HS0fIPm48lDYF6aKuw+IDSTI77d/UVrIgmgN/DyrKISdXx+00BnkThM2m3ZNloPDMrVxDxwlH8KX4ltVqzrWWOdL1lkI7/lzXUQwIDAQAB",
    "manifest_version": 3,
-   "name": "Date Stamp",
+   "name": "Date Stamp TESTING",
    "permissions": [ "contextMenus", "activeTab", "scripting", "storage" ],
-   "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "0.90"
+   "version": "0.90.4"
 }
