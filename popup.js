@@ -1,3 +1,4 @@
+/*
 let timestamp = document.getElementById("timestamp");
 let pending = document.getElementById("pending");
 
@@ -48,3 +49,4 @@ const saveOptions = () => {
   document.addEventListener('DOMContentLoaded', restoreOptions);
   document.getElementById('timestamp').addEventListener('click', saveOptions);
   document.getElementById('pending').addEventListener('click', saveOptions);
+*/
