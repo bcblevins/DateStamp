@@ -61,15 +61,24 @@ const shortcutsButton = document.createElement("button");
 shortcutsButton.innerText = "Set Shortcuts";
 shortcutsButton.id = "shortcuts-button";
 
+const bugReportButton = document.createElement("button");
+bugReportButton.innerText = "Report a Bug";
+bugReportButton.id = "report-button";
+
 menu.appendChild(heading);
 menu.appendChild(shortcutsButton);
 menu.appendChild(pendingButton);
+menu.appendChild(bugReportButton);
 
 // events
 bubble.addEventListener("click", () => toggleMenu());
 
 shortcutsButton.addEventListener("click", () => {
   chrome.runtime.sendMessage("openShortcuts");
+});
+
+bugReportButton.addEventListener("click", () => {
+  chrome.runtime.sendMessage("openPopup");
 });
 
 // pendingButton.addEventListener("click", () => toggleActive(pendingButton))
@@ -100,4 +109,4 @@ chrome.storage.sync.get("highlighted", (data) => {
 	constantHighlight(data.highlighted);
 });
 
-chrome.runtime.sendMessage("enableInProgressStamp")
+chrome.runtime.sendMessage("enableInProgressStamp");

@@ -44,7 +44,7 @@
       "48": "icon48.png"
    },
    "manifest_version": 3,
-   "name": "Date Stamp TESTING",
+   "name": "Date Stamp",
    "permissions": [ "contextMenus", "activeTab", "scripting", "storage" ],
-   "version": "0.90.4"
+   "version": "0.91.0"
 }

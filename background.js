@@ -166,6 +166,9 @@ chrome.runtime.onMessage.addListener((request) => {
             contexts: ['editable']
         });
     }
+    if (request === "openPopup") {
+        chrome.action.openPopup();
+    }
 });
 
 //SOURCES FOR NOTES:
